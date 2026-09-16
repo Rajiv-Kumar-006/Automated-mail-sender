@@ -1,229 +1,168 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= subject %></title>
+
   <style>
-    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
-    img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
     body {
       margin: 0;
       padding: 0;
-      width: 100% !important;
-      min-width: 100%;
-      background-color: #f4f6f9;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      color: #2d3748;
+      background: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #333333;
       line-height: 1.6;
     }
-    .wrapper {
-      width: 100%;
-      table-layout: fixed;
-      background-color: #f4f6f9;
-      padding: 30px 10px;
-    }
-    .main-table {
-      background-color: #ffffff;
-      margin: 0 auto;
+
+    .email-container {
       max-width: 600px;
-      width: 100%;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      margin: 0 auto;
+      padding: 30px 20px;
     }
-    .header-bar {
-      height: 6px;
-      background: linear-gradient(90deg, #3b82f6 0%, #6366f1 50%, #8b5cf6 100%);
-    }
-    .content-cell {
-      padding: 36px 36px 28px 36px;
-    }
-    h2 {
-      color: #1a202c;
-      font-size: 20px;
-      font-weight: 600;
-      margin: 0 0 18px 0;
-    }
+
     p {
-      color: #4a5568;
+      margin: 0 0 16px;
       font-size: 15px;
-      line-height: 1.65;
-      margin: 0 0 16px 0;
+      color: #333333;
     }
-    .highlight-box {
-      background-color: #f8fafc;
-      border-left: 4px solid #3b82f6;
-      border-radius: 4px;
-      padding: 14px 18px;
-      margin: 20px 0;
-    }
-    .highlight-box p {
-      margin: 0;
-      font-size: 14px;
-      color: #334155;
-    }
-    .skills-container {
-      margin: 16px 0 22px 0;
-    }
-    .skill-tag {
-      display: inline-block;
-      background-color: #eff6ff;
-      color: #1d4ed8;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 12px;
-      margin: 3px 4px 3px 0;
-      border: 1px solid #dbeafe;
-    }
-    .button-table {
-      margin: 24px 0 12px 0;
-    }
-    .cta-button {
-      background-color: #2563eb;
-      color: #ffffff !important;
+
+    a {
+      color: #2563eb;
       text-decoration: none;
-      font-size: 14px;
+    }
+
+    .signature {
+      margin-top: 25px;
+    }
+
+    .name {
       font-weight: 600;
-      padding: 11px 22px;
-      border-radius: 6px;
-      display: inline-block;
+      color: #222222;
+      margin-bottom: 3px;
     }
-    .secondary-link {
-      color: #2563eb !important;
-      text-decoration: underline;
-      font-weight: 500;
-      margin-left: 14px;
+
+    .role {
+      color: #555555;
+      margin-bottom: 8px;
+    }
+
+    .contact {
       font-size: 14px;
-    }
-    .signature-area {
-      border-top: 1px solid #edf2f7;
-      padding-top: 20px;
-      margin-top: 26px;
-    }
-    .sender-name {
-      font-weight: 700;
-      color: #1e293b;
-      font-size: 15px;
-      margin: 0 0 2px 0;
-    }
-    .sender-role {
-      color: #64748b;
-      font-size: 13px;
-      margin: 0 0 6px 0;
-    }
-    .sender-links a {
-      color: #3b82f6;
-      text-decoration: none;
-      font-size: 13px;
-      margin-right: 12px;
-    }
-    .footer-cell {
-      background-color: #f8fafc;
-      padding: 16px 36px;
-      text-align: center;
-      border-top: 1px solid #edf2f7;
-    }
-    .footer-cell p {
-      font-size: 11px;
-      color: #94a3b8;
-      margin: 0;
-      line-height: 1.4;
-    }
-    @media only screen and (max-width: 600px) {
-      .content-cell { padding: 24px 20px 20px 20px !important; }
-      .footer-cell { padding: 14px 20px !important; }
-      .cta-button { display: block !important; text-align: center !important; margin-bottom: 10px; }
-      .secondary-link { display: block !important; text-align: center !important; margin-left: 0 !important; }
+      color: #555555;
     }
   </style>
+
 </head>
+
 <body>
-  <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="100%">
-    <tr>
-      <td align="center">
-        <table role="presentation" class="main-table" cellspacing="0" cellpadding="0" border="0" width="100%">
-          <tr>
-            <td class="header-bar"></td>
-          </tr>
-          <tr>
-            <td class="content-cell">
-              <h2>
-                <% if (companyName && companyName !== 'your team') { %>
-                  Hi <%= companyName %> Talent Acquisition Team,
-                <% } else { %>
-                  Hi Hiring Team,
-                <% } %>
-              </h2>
 
-              <p>
-                I hope this email finds you well. I am reaching out to express my strong interest in software engineering and development opportunities at <strong><%= companyName || 'your esteemed organization' %></strong><% if (location) { %> (<%= location %>)<% } %>.
-              </p>
+  <div class="email-container">
 
-              <p>
-                With <strong><%= sender.yearsOfExp %></strong> of hands-on experience building scalable web applications and robust backend architectures, I have developed expertise in delivering high-quality, maintainable code and solving complex technical challenges.
-              </p>
 
-              <div class="highlight-box">
-                <p><strong>Key Technical Highlights:</strong></p>
-                <div class="skills-container">
-                  <% if (sender.skills) { %>
-                    <% sender.skills.split(',').forEach(function(skill) { %>
-                      <span class="skill-tag"><%= skill.trim() %></span>
-                    <% }); %>
-                  <% } %>
-                </div>
-              </div>
+<p>
+  <% if (companyName && companyName !== 'your team') { %>
+    Hi <%= companyName %> Talent Acquisition Team,
+  <% } else { %>
+    Hi Hiring Team,
+  <% } %>
+</p>
 
-              <p>
-                I would welcome the opportunity to connect and discuss how my skills and problem-solving mindset can contribute to current or upcoming engineering openings in your team.
-              </p>
+<p>
+  I hope you are doing well.
+</p>
 
-              <!-- Call to Action -->
-              <table role="presentation" class="button-table" cellspacing="0" cellpadding="0" border="0">
-                <tr>
-                  <td>
-                    <% if (sender.portfolio) { %>
-                      <a href="<%= sender.portfolio %>" class="cta-button" target="_blank">View Portfolio & Projects</a>
-                    <% } %>
-                    <% if (sender.linkedin) { %>
-                      <a href="<%= sender.linkedin %>" class="secondary-link" target="_blank">LinkedIn Profile &rarr;</a>
-                    <% } %>
-                  </td>
-                </tr>
-              </table>
+<p>
+  I am writing to express my interest in PHP/Laravel Developer opportunities at
+  <strong><%= companyName || 'your organization' %></strong>
+  <% if (location) { %>
+    in <%= location %>
+  <% } %>.
+</p>
 
-              <!-- Signature -->
-              <div class="signature-area">
-                <p class="sender-name"><%= sender.name %></p>
-                <p class="sender-role"><%= sender.title %></p>
-                <div class="sender-links">
-                  <% if (sender.phone) { %>
-                    <span>📞 <%= sender.phone %></span> &nbsp;|&nbsp;
-                  <% } %>
-                  <% if (sender.email) { %>
-                    <span>✉️ <%= sender.email %></span>
-                  <% } %>
-                  <% if (sender.github) { %>
-                    &nbsp;|&nbsp; <a href="<%= sender.github %>" target="_blank">GitHub</a>
-                  <% } %>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="footer-cell">
-              <p>
-                You received this email because your contact was listed for talent outreach. If this was sent in error, please reply with "Unsubscribe" to be removed immediately.
-              </p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
+<p>
+  I am currently working as a PHP/Laravel Developer at <strong>Minterminds</strong> with
+  <strong><%= sender.yearsOfExp %></strong> of professional experience.
+  My experience includes developing and maintaining web applications using PHP
+  and Laravel, working with MySQL databases, developing and integrating REST APIs,
+  debugging issues, and optimizing existing application functionality.
+</p>
+
+<% if (sender.skills) { %>
+  <p>
+    My key technical skills include
+    <strong><%= sender.skills %></strong>.
+  </p>
+<% } %>
+
+<p>
+  I would appreciate the opportunity to discuss any current or upcoming
+  positions that match my experience and skill set.
+</p>
+
+<p>
+  Please find my profile and project links below for reference:
+</p>
+
+<p>
+  <% if (sender.portfolio) { %>
+    <a href="<%= sender.portfolio %>" target="_blank">Portfolio</a>
+  <% } %>
+
+  <% if (sender.portfolio && sender.linkedin) { %>
+    &nbsp; | &nbsp;
+  <% } %>
+
+  <% if (sender.linkedin) { %>
+    <a href="<%= sender.linkedin %>" target="_blank">LinkedIn</a>
+  <% } %>
+
+  <% if ((sender.portfolio || sender.linkedin) && sender.github) { %>
+    &nbsp; | &nbsp;
+  <% } %>
+
+  <% if (sender.github) { %>
+    <a href="<%= sender.github %>" target="_blank">GitHub</a>
+  <% } %>
+</p>
+
+<p>
+  Thank you for your time and consideration. I look forward to hearing from you.
+</p>
+
+<div class="signature">
+
+  <p class="name">
+    <%= sender.name %>
+  </p>
+
+  <!-- <p class="role">
+    <%= sender.title %>
+  </p> -->
+
+  <p class="contact">
+
+    <% if (sender.phone) { %>
+      <%= sender.phone %>
+    <% } %>
+
+    <% if (sender.phone && sender.email) { %>
+      &nbsp; | &nbsp;
+    <% } %>
+
+    <% if (sender.email) { %>
+      <a href="mailto:<%= sender.email %>">
+        <%= sender.email %>
+      </a>
+    <% } %>
+
+  </p>
+
+</div>
+
+
+  </div>
+
 </body>
 </html>

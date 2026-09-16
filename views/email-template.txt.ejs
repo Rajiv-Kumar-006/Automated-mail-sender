@@ -1,23 +1,27 @@
 <% if (companyName && companyName !== 'your team') { %>Hi <%= companyName %> Talent Acquisition Team,<% } else { %>Hi Hiring Team,<% } %>
 
-I hope this email finds you well. I am reaching out to express my strong interest in software engineering and development opportunities at <%= companyName || 'your esteemed organization' %><% if (location) { %> (<%= location %>)<% } %>.
+I hope you are doing well.
 
-With <%= sender.yearsOfExp %> of hands-on experience building scalable web applications and robust backend architectures, I have developed expertise in delivering high-quality, maintainable code and solving complex technical challenges.
+I am writing to express my interest in PHP/Laravel Developer opportunities at <%= companyName || 'your organization' %><% if (location) { %> in <%= location %><% } %>.
 
-Key Technical Skills: <%= sender.skills %>
+I am currently working as a PHP/Laravel Developer at Minterminds with <%= sender.yearsOfExp %> of professional experience. My experience includes developing and maintaining web applications using PHP and Laravel, working with MySQL databases, developing and integrating REST APIs, debugging issues, and optimizing existing application functionality.
+<% if (sender.skills) { %>
+My key technical skills include <%= sender.skills %>.
+<% } %>
+I would appreciate the opportunity to discuss any current or upcoming positions that match my experience and skill set.
 
-I would welcome the opportunity to connect and discuss how my skills and problem-solving mindset can contribute to current or upcoming engineering openings in your team.
-
-Portfolio / Projects: <%= sender.portfolio || 'Available upon request' %>
-LinkedIn: <%= sender.linkedin || 'Available upon request' %>
-GitHub: <%= sender.github || '' %>
+Please find my profile and project links below for reference:
+<% if (sender.portfolio) { %>Portfolio: <%= sender.portfolio %>
+<% } %><% if (sender.linkedin) { %>LinkedIn: <%= sender.linkedin %>
+<% } %><% if (sender.github) { %>GitHub: <%= sender.github %>
+<% } %>
+Thank you for your time and consideration. I look forward to hearing from you.
 
 Best regards,
 
 <%= sender.name %>
-<%= sender.title %>
-Phone: <%= sender.phone %>
-Email: <%= sender.email %>
-
+<% if (sender.phone) { %>Phone: <%= sender.phone %>
+<% } %><% if (sender.email) { %>Email: <%= sender.email %>
+<% } %>
 ---
 If this email was received in error, please reply with "Unsubscribe" to be removed immediately.
