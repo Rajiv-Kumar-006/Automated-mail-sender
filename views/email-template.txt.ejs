@@ -1,0 +1,23 @@
+<% if (companyName && companyName !== 'your team') { %>Hi <%= companyName %> Talent Acquisition Team,<% } else { %>Hi Hiring Team,<% } %>
+
+I hope this email finds you well. I am reaching out to express my strong interest in software engineering and development opportunities at <%= companyName || 'your esteemed organization' %><% if (location) { %> (<%= location %>)<% } %>.
+
+With <%= sender.yearsOfExp %> of hands-on experience building scalable web applications and robust backend architectures, I have developed expertise in delivering high-quality, maintainable code and solving complex technical challenges.
+
+Key Technical Skills: <%= sender.skills %>
+
+I would welcome the opportunity to connect and discuss how my skills and problem-solving mindset can contribute to current or upcoming engineering openings in your team.
+
+Portfolio / Projects: <%= sender.portfolio || 'Available upon request' %>
+LinkedIn: <%= sender.linkedin || 'Available upon request' %>
+GitHub: <%= sender.github || '' %>
+
+Best regards,
+
+<%= sender.name %>
+<%= sender.title %>
+Phone: <%= sender.phone %>
+Email: <%= sender.email %>
+
+---
+If this email was received in error, please reply with "Unsubscribe" to be removed immediately.

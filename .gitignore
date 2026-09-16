@@ -1,0 +1,5 @@
+node_modules/
+.env
+logs/*.json
+attachments/*.pdf
+!attachments/README.md

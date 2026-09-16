@@ -1,0 +1,33 @@
+{
+  "name": "cold-email-outreach-engine",
+  "version": "1.0.0",
+  "description": "High deliverability cold email outreach engine with CSV parsing, EJS templating, Web Dashboard, and 1-second rate-limiting using Nodemailer",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "campaign": "node src/index.js",
+    "campaign:dry-run": "node src/index.js --dry-run",
+    "send": "node src/index.js",
+    "dry-run": "node src/index.js --dry-run",
+    "analyze": "node src/analyzer.js",
+    "preview": "node src/templateRenderer.js --preview",
+    "test-mail": "node src/mailer.js --test"
+  },
+  "keywords": [
+    "cold-email",
+    "nodemailer",
+    "ejs",
+    "express",
+    "email-marketing",
+    "csv-parser",
+    "rate-limiter"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "nodemailer": "^6.10.0"
+  }
+}

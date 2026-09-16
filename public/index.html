@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cold Outreach Studio | 1-Sec Nodemailer Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Outreach<span>Studio</span></h1>
+          <span class="version-tag">v1.0 • 1 Mail/Sec Engine</span>
+        </div>
+      </div>
+
+      <div class="header-status">
+        <div class="smtp-badge" id="smtpStatusBadge">
+          <span class="dot"></span>
+          <span id="smtpStatusText">Checking SMTP...</span>
+        </div>
+        <button id="btnVerifySmtp" class="btn btn-secondary btn-sm">Verify SMTP</button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-tab="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        Campaign Dashboard
+      </button>
+      <button class="tab-btn" data-tab="custom-list">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Send Custom List
+      </button>
+      <button class="tab-btn" data-tab="preview">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        EJS Template Preview
+      </button>
+      <button class="tab-btn" data-tab="contacts">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        CSV Contacts (<span id="tabContactsCount">1,915</span>)
+      </button>
+      <button class="tab-btn" data-tab="test-sender">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        Send Test Email
+      </button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- TAB 1: DASHBOARD (FULL CSV CAMPAIGN) -->
+      <section id="tab-dashboard" class="tab-pane active">
+        <!-- Metric Cards -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Total Unique Contacts</span>
+              <span class="metric-icon blue">👥</span>
+            </div>
+            <div class="metric-value" id="statTotal">1,915</div>
+            <div class="metric-desc">Cleaned & Deduplicated from CSV</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Successfully Sent</span>
+              <span class="metric-icon green">✅</span>
+            </div>
+            <div class="metric-value text-green" id="statSent">0</div>
+            <div class="metric-desc" id="statSentPercent">0.0% of total queue</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Remaining In Queue</span>
+              <span class="metric-icon purple">⏳</span>
+            </div>
+            <div class="metric-value text-purple" id="statPending">1,915</div>
+            <div class="metric-desc">Waiting to be dispatched</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Rate Limiting</span>
+              <span class="metric-icon amber">⚡</span>
+            </div>
+            <div class="metric-value" id="statRate">1.0s / mail</div>
+            <div class="metric-desc">Guaranteed 1 mail per second</div>
+          </div>
+        </div>
+
+        <!-- Progress Bar Card -->
+        <div class="card progress-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h2 class="card-title">Campaign Dispatch Progress</h2>
+              <span class="status-pill status-idle" id="campaignStatusPill">IDLE</span>
+            </div>
+            <span class="progress-percentage" id="progressPercentageText">0%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Campaign Controls Card -->
+        <div class="card controls-card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Full CSV Campaign Dispatcher</h2>
+              <p class="card-subtitle">Click 'Start Campaign' below or run <code>npm run campaign</code> in your terminal</p>
+            </div>
+            <div class="controls-toggles">
+              <label class="toggle-container">
+                <input type="checkbox" id="chkDryRun" checked>
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">Dry Run (Simulation Mode)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="controls-body">
+            <div class="controls-actions">
+              <button id="btnStartCampaign" class="btn btn-primary btn-lg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Start CSV Campaign
+              </button>
+              <button id="btnPauseCampaign" class="btn btn-warning btn-lg" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                Pause
+              </button>
+              <button id="btnResumeCampaign" class="btn btn-primary btn-lg" style="display: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Resume
+              </button>
+              <button id="btnStopCampaign" class="btn btn-danger btn-lg" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16"></rect></svg>
+                Stop
+              </button>
+            </div>
+
+            <div class="speed-settings">
+              <label for="rangeDelay">Pacing Delay: <strong id="valDelay">1000</strong> ms (1 sec)</label>
+              <input type="range" id="rangeDelay" min="500" max="5000" step="250" value="1000">
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Terminal Stream -->
+        <div class="card terminal-card">
+          <div class="card-header">
+            <div class="terminal-title">
+              <span class="terminal-dots">
+                <span class="t-red"></span>
+                <span class="t-yellow"></span>
+                <span class="t-green"></span>
+              </span>
+              <span>Live Outreach Terminal (1 sec stream)</span>
+            </div>
+            <button id="btnClearLogs" class="btn btn-ghost btn-sm">Clear</button>
+          </div>
+          <div class="terminal-window" id="terminalWindow">
+            <div class="log-line log-info">[<%= new Date().toLocaleTimeString() %>] 🚀 Server is online and ready. Click 'Start CSV Campaign' or use 'Send Custom List' to dispatch emails at 1 mail/sec.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: SEND CUSTOM EMAIL LIST -->
+      <section id="tab-custom-list" class="tab-pane">
+        <div class="card form-card" style="max-width: 800px;">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">🎯 Send to Custom Email List</h2>
+              <p class="card-subtitle">Paste specific email addresses to dispatch emails <strong>only to those recipients</strong> (1 mail per second)</p>
+            </div>
+            <div class="controls-toggles">
+              <label class="toggle-container">
+                <input type="checkbox" id="chkCustomDryRun">
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">Dry Run</span>
+              </label>
+            </div>
+          </div>
+
+          <form id="formCustomList">
+            <div class="form-group">
+              <label for="textareaCustomEmails">Recipient Emails (Paste comma-separated, newline-separated, or JSON array)</label>
+              <textarea id="textareaCustomEmails" rows="6" class="form-control font-mono" placeholder="hr@google.com, recruiter@amazon.com, talent@netflix.com&#10;or&#10;user1@domain.com&#10;user2@domain.com" required></textarea>
+              <span class="form-hint">Each email will be normalized and sent at exactly 1 email per second.</span>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="inputCustomCompany">Default Company Name (Optional)</label>
+                <input type="text" id="inputCustomCompany" placeholder="e.g. Your Team" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="inputCustomLocation">Default Location (Optional)</label>
+                <input type="text" id="inputCustomLocation" placeholder="e.g. Remote / Bengaluru" class="form-control">
+              </div>
+            </div>
+
+            <div class="form-actions" style="margin-top: 20px;">
+              <button type="submit" id="btnSubmitCustom" class="btn btn-primary btn-lg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Dispatch Custom Emails (1 sec/mail)
+              </button>
+            </div>
+
+            <div id="customResultMsg" class="result-box" style="display: none;"></div>
+          </form>
+
+          <!-- API Guide Box -->
+          <div class="api-guide-box">
+            <h4>💡 Direct API Endpoint for Custom Emails:</h4>
+            <p>You can also send custom emails programmatically by sending a <code>POST</code> request:</p>
+            <pre class="code-box"><code>curl -X POST http://localhost:3000/api/campaign/custom \
+  -H "Content-Type: application/json" \
+  -d '{
+    "emails": ["recruiter1@company.com", "recruiter2@company.com"],
+    "dryRun": false,
+    "delayMs": 1000
+  }'</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: TEMPLATE PREVIEW -->
+      <section id="tab-preview" class="tab-pane">
+        <div class="card preview-card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Live EJS Email Template Preview</h2>
+              <p class="card-subtitle">Rendered exactly as recipients will see it in Gmail, Outlook & Apple Mail</p>
+            </div>
+            <div class="preview-controls">
+              <button id="btnRefreshPreview" class="btn btn-secondary btn-sm">🔄 Refresh Preview</button>
+            </div>
+          </div>
+          <div class="subject-banner">
+            <span class="subject-tag">Subject:</span>
+            <span class="subject-text" id="previewSubject">Loading subject...</span>
+          </div>
+          <div class="preview-iframe-wrapper">
+            <iframe id="previewIframe" src="/api/preview" frameborder="0"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: CONTACTS LIST -->
+      <section id="tab-contacts" class="tab-pane">
+        <div class="card table-card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Cleaned HR Outreach Contacts (CSV)</h2>
+              <p class="card-subtitle">Deduplicated & normalized with company names and locations</p>
+            </div>
+            <div class="table-search">
+              <input type="text" id="inputSearchContacts" placeholder="Search email, company or location..." class="input-search">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Email Address</th>
+                  <th>Company Name</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="contactsTableBody">
+                <tr><td colspan="5" class="text-center">Loading contacts...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-pagination" id="tablePagination">
+            <button id="btnPrevPage" class="btn btn-secondary btn-sm" disabled>&larr; Previous</button>
+            <span id="pageIndicator">Page 1 of 64</span>
+            <button id="btnNextPage" class="btn btn-secondary btn-sm">Next &rarr;</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: TEST EMAIL SENDER -->
+      <section id="tab-test-sender" class="tab-pane">
+        <div class="card form-card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Send a Test Email</h2>
+              <p class="card-subtitle">Verify your inbox deliverability and formatting before broadcasting to the full list</p>
+            </div>
+          </div>
+          <form id="formTestEmail" class="test-email-form">
+            <div class="form-group">
+              <label for="inputTestTo">Send To (Your Email Address)</label>
+              <input type="email" id="inputTestTo" placeholder="your_personal_email@gmail.com" required class="form-control">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="inputTestCompany">Sample Company Name</label>
+                <input type="text" id="inputTestCompany" value="Google / Test Corp" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="inputTestLocation">Sample Location</label>
+                <input type="text" id="inputTestLocation" value="Bengaluru / Remote" class="form-control">
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" id="btnSubmitTest" class="btn btn-primary btn-lg">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                Send Test Email Now
+              </button>
+            </div>
+            <div id="testResultMsg" class="result-box" style="display: none;"></div>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
